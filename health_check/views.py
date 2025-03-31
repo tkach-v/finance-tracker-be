@@ -1,10 +1,13 @@
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
+
+from health_check.serializers import HealthCheckSerializer
 
 
-class ApiHealthCheck(APIView):
+class ApiHealthCheck(GenericAPIView):
+    serializer_class = HealthCheckSerializer
+
     def get(self, request):
-        result = {
-            "message": "Server works",
-        }
-        return Response(result)
+        serializer = self.get_serializer(data={"message": "Server works"})
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)
