@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.3
+    hooks:
+      - id: ruff
+        args: [ --fix ]
+      - id: ruff-format
+
+  - repo: https://github.com/ambv/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        exclude: pricing_algorithm/algorithm/utils/competitor_cleaning_imputation_scorings.py
+
+  - repo: https://github.com/timothycrosley/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: [ "--profile", "black", "--filter-files" ]
