@@ -3,7 +3,7 @@ repos:
     rev: v0.8.3
     hooks:
       - id: ruff
-        args: [ --fix ]
+        args: [ --fix, "--ignore=F403,F405" ]
       - id: ruff-format
 
   - repo: https://github.com/ambv/black
