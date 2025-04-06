@@ -1,9 +1,11 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
 from health_check.serializers import HealthCheckSerializer
 
 
+@extend_schema(tags=["Health Check"])
 class ApiHealthCheck(GenericAPIView):
     serializer_class = HealthCheckSerializer
 

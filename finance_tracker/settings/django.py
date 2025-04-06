@@ -23,7 +23,9 @@ INSTALLED_APPS = [
     # third-party apps
     "rest_framework",
     # project apps
+    "common",
     "health_check",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -93,3 +95,5 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 20,
     "COERCE_DECIMAL_TO_STRING": False,
 }
+
+AUTH_USER_MODEL = "users.User"
