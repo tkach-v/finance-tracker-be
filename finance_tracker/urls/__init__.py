@@ -6,5 +6,6 @@ urlpatterns = [
     path("", include("finance_tracker.urls.swagger")),
     path("", include("finance_tracker.urls.develop")),
     path("api/health-check/", include("health_check.urls")),
-    path("api/user/", include("users.urls")),
+    path("api/", include("djoser.urls")),
+    path("api/", include("djoser.urls.jwt")),
 ]
