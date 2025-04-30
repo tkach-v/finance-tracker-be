@@ -32,7 +32,7 @@ cd finance-tracker-be
 
 ### 2. Configure Environment Variables
 
-Create a `.env` file in the project root directory:
+Create a `.env` file in the project root directory and populate it with the necessary environment variables. You can use the `.env.sample` file as a reference.
 
 ### 3. Launch the Application
 
