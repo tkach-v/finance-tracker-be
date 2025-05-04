@@ -33,6 +33,6 @@ WORKDIR /app
 ENV PATH="/app/venv/bin:$PATH"
 
 RUN chmod +x scripts/start.sh
-EXPOSE 8000
+EXPOSE 8000 5555
 
-ENTRYPOINT ["scripts/start.sh"]
+CMD ["scripts/start.sh"]

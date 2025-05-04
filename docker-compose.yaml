@@ -33,6 +33,50 @@ services:
       timeout: 3s
       retries: 5
 
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  celery:
+    image: finance-tracker-backend-image
+    depends_on:
+      - postgres
+      - redis
+    command: "uv run celery -A finance_tracker worker --loglevel=info --logfile=celery_worker.log"
+    volumes:
+      - ./:/app/
+      - empty_venv:/app/.venv
+    env_file:
+      - .env
+
+  celery-beat:
+    image: finance-tracker-backend-image
+    container_name: finance-tracker-celery-beat
+    depends_on:
+      - postgres
+      - redis
+    command: "uv run celery -A finance_tracker beat --loglevel=info --logfile=celery_beat.log --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+    volumes:
+      - ./:/app/
+      - empty_venv:/app/.venv
+    env_file: .env
+
+  flower:
+    image: finance-tracker-backend-image
+    container_name: flower
+    command: "uv run celery -A finance_tracker flower"
+    ports:
+      - "5555:5555"
+    env_file: .env
+    volumes:
+      - ./:/app/
+      - empty_venv:/app/.venv
+    depends_on:
+      - celery-beat
+      - redis
+      - celery
+
 volumes:
   postgres_data:
   empty_venv:
