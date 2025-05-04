@@ -8,4 +8,5 @@ urlpatterns = [
     path("api/health-check/", include("health_check.urls")),
     path("api/", include("djoser.urls")),
     path("api/", include("djoser.urls.jwt")),
+    path("api/currencies/", include("currencies.urls")),
 ]
