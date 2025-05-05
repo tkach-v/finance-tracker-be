@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "health_check",
     "users",
     "currencies",
+    "integrations",
 ]
 
 MIDDLEWARE = [

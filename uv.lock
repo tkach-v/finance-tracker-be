@@ -425,6 +425,7 @@ dependencies = [
     { name = "djoser" },
     { name = "flower" },
     { name = "psycopg2-binary" },
+    { name = "pycoingecko" },
     { name = "redis" },
 ]
 
@@ -448,6 +449,7 @@ requires-dist = [
     { name = "djoser", specifier = ">=2.3.1" },
     { name = "flower", specifier = ">=2.0.1" },
     { name = "psycopg2-binary", specifier = ">=2.9.10" },
+    { name = "pycoingecko", specifier = ">=3.2.0" },
     { name = "redis", specifier = ">=6.0.0" },
 ]
 
@@ -664,6 +666,18 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/04/6e/1f4a62078e4d95d82367f24e685aef3a672abfd27d1a868068fed4ed2254/pycodestyle-2.13.0.tar.gz", hash = "sha256:c8415bf09abe81d9c7f872502a6eee881fbe85d8763dd5b9924bb0a01d67efae", size = 39312 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/07/be/b00116df1bfb3e0bb5b45e29d604799f7b91dd861637e4d448b4e09e6a3e/pycodestyle-2.13.0-py2.py3-none-any.whl", hash = "sha256:35863c5974a271c7a726ed228a14a4f6daf49df369d8c50cd9a6f58a5e143ba9", size = 31424 },
+]
+
+[[package]]
+name = "pycoingecko"
+version = "3.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/06/13/2678a9ee00171855290a53b2a661e034f710cf063394d685bb74349a3e0b/pycoingecko-3.2.0.tar.gz", hash = "sha256:c48935d6e608efd9a798cbc4be30f1b43176cb680503dfef8f9352e038fc7605", size = 18002 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7f/94/fd71f6d25daa9d53da60c7bb3adb5a4f6b92d9ec831c3f3ac1309d430db1/pycoingecko-3.2.0-py3-none-any.whl", hash = "sha256:b4fec16e9420b3e2f1ae38ea95710b631c9809cf1bffbf0021cc6608e357925b", size = 10841 },
 ]
 
 [[package]]
