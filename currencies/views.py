@@ -7,9 +7,9 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
-from currencies.models import Currency, CurrencyPrice
+from currencies.models import Currency, CurrencyPrice, CurrencyType
 from currencies.serializers import CurrencySerializer
-from finance_tracker.scripts.get_coingecko_tokens import (
+from finance_tracker.scripts.get_coingecko_currencies import (
     fetch_top_cryptos,
     fetch_top_fiats,
 )
@@ -82,6 +82,7 @@ class CurrencyViewSet(viewsets.ReadOnlyModelViewSet):
                     "name": item["name"],
                     "symbol": item["symbol"],
                     "current_price": item["price_usd"],
+                    "type": CurrencyType.CRYPTO,
                 },
             )
             CurrencyPrice.objects.create(
@@ -96,6 +97,7 @@ class CurrencyViewSet(viewsets.ReadOnlyModelViewSet):
                     "name": item["code"],
                     "symbol": item["symbol"],
                     "current_price": item["price_usd"],
+                    "type": CurrencyType.FIAT,
                 },
             )
             CurrencyPrice.objects.create(

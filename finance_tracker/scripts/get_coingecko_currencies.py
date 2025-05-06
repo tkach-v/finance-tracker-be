@@ -19,6 +19,7 @@ def fetch_top_cryptos(
         "order": "market_cap_desc",
         "per_page": per_page,
         "page": page,
+        "precision": 8,
     }
     if coin_ids:
         params["ids"] = ",".join(coin_ids)
@@ -26,6 +27,9 @@ def fetch_top_cryptos(
     data = coingecko_client.get_coins_markets(**params)
     result = []
     for item in data:
+        if not item.get("current_price"):
+            continue
+
         result.append(
             {
                 "id": item["id"],

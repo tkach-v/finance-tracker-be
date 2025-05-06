@@ -3,6 +3,11 @@ from django.db import models
 from common.models import TimeStampedModel
 
 
+class CurrencyType(models.TextChoices):
+    CRYPTO = "crypto", "Cryptocurrency"
+    FIAT = "fiat", "Fiat currency"
+
+
 class Currency(TimeStampedModel):
     id = models.CharField(
         max_length=255,
@@ -27,6 +32,12 @@ class Currency(TimeStampedModel):
         null=True,
         blank=True,
         help_text="Latest price relative to base currency (USD)",
+    )
+    type = models.CharField(
+        max_length=10,
+        choices=CurrencyType.choices,
+        default=CurrencyType.CRYPTO,
+        help_text="Type of currency",
     )
 
     class Meta:
