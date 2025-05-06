@@ -23,7 +23,7 @@ app.conf.ONCE = {
 app.conf.beat_schedule = {
     "update-currencies-every-hour": {
         "task": "currencies.tasks.update_currencies",
-        "schedule": crontab(minute="*"),  # TODO: change to every hour
+        "schedule": crontab(hour=1, minute=0),
         "args": (),
     },
 }
