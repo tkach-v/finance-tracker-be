@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "users",
     "currencies",
     "integrations",
+    "categories",
 ]
 
 MIDDLEWARE = [
