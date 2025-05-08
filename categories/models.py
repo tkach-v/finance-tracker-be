@@ -18,11 +18,6 @@ class Category(TimeStampedModel):
     color = models.CharField(
         max_length=7, default="#CCCCCC", help_text="Hex color, e.g. #FF0000"
     )
-    icon = models.CharField(
-        max_length=255,
-        blank=True,
-        help_text="Icon name that will be used in the frontend",
-    )
     budget_limit = models.DecimalField(
         max_digits=15,
         decimal_places=2,

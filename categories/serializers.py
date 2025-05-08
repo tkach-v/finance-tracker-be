@@ -9,7 +9,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ("id", "user", "name", "type", "color", "icon", "budget_limit")
+        fields = ("id", "user", "name", "type", "color", "budget_limit")
         read_only_fields = ("id",)
         validators = [
             UniqueTogetherValidator(
