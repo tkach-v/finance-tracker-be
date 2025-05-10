@@ -10,4 +10,5 @@ urlpatterns = [
     path("api/", include("djoser.urls.jwt")),
     path("api/currencies/", include("currencies.urls")),
     path("api/categories/", include("categories.urls")),
+    path("api/accounts/", include("accounts.urls")),
 ]

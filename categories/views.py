@@ -6,7 +6,7 @@ from categories.permissions import IsOwner
 from categories.serializers import CategorySerializer
 
 
-@extend_schema(tags=["Cagegories"])
+@extend_schema(tags=["Categories"])
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
