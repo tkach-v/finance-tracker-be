@@ -17,7 +17,7 @@ from finance_tracker.scripts.get_coingecko_currencies import (
 
 @extend_schema(tags=["Currencies"])
 class CurrencyViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Currency.objects.all()
+    queryset = Currency.objects.filter(is_active=True)
     serializer_class = CurrencySerializer
     lookup_field = "id"
     pagination_class = None

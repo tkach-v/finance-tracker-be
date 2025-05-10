@@ -9,7 +9,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ("id", "user", "name", "color")
+        fields = ("id", "user", "name", "color", "currency", "balance")
         read_only_fields = ("id",)
         validators = [
             UniqueTogetherValidator(

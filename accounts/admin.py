@@ -8,6 +8,8 @@ class AccountAdmin(admin.ModelAdmin):
     list_display = (
         "user",
         "name",
+        "balance",
+        "currency",
     )
-    list_filter = ("name",)
+    list_filter = ("name", "user", "currency")
     search_fields = ("name",)
