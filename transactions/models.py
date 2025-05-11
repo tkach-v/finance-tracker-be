@@ -18,13 +18,13 @@ class Transaction(TimeStampedModel):
     )
     account = models.ForeignKey(
         Account,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="transactions",
         help_text="Account associated with the transaction",
     )
     category = models.ForeignKey(
         Category,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="transactions",
         help_text="Category of the transaction",
     )

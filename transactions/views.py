@@ -11,6 +11,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionsSerializer
     permission_classes = [IsOwner]
+    # TODO: add filtering per category, date, account
 
     def get_queryset(self):
         return Transaction.objects.filter(user=self.request.user)
