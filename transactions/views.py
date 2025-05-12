@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 
@@ -11,7 +12,9 @@ class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionsSerializer
     permission_classes = [IsOwner]
-    # TODO: add filtering per category, date, account
+
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["category", "account", "type"]
 
     def get_queryset(self):
         return Transaction.objects.filter(user=self.request.user)
