@@ -39,7 +39,7 @@ class Transaction(TimeStampedModel):
     date = models.DateField(help_text="Date of the transaction")
 
     class Meta:
-        ordering = ["-created_at"]
+        ordering = ["-date", "-created_at"]
         verbose_name_plural = "Transactions"
 
     def save(self, *args, **kwargs):
