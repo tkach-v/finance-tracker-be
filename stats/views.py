@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.db.models import (
+    Case,
     DecimalField,
     ExpressionWrapper,
     F,
@@ -8,6 +9,7 @@ from django.db.models import (
     Q,
     Subquery,
     Sum,
+    When,
 )
 from django.db.models.functions import (
     Coalesce,
@@ -21,6 +23,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from accounts.models import Account
 from currencies.models import CurrencyPrice
 from transactions.models import Transaction
 
@@ -113,3 +116,43 @@ class TransactionStatsView(APIView):
             for entry in qs
         ]
         return Response(data)
+
+
+@extend_schema(tags=["Statistics"])
+class TotalBalanceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        accounts_qs = Account.objects.filter(user=user).annotate(
+            local_balance=Sum(
+                Case(
+                    When(transactions__type="income", then=F("transactions__amount")),
+                    When(
+                        transactions__type="expense",
+                        then=F("transactions__amount") * -1,
+                    ),
+                    output_field=DecimalField(max_digits=20, decimal_places=2),
+                )
+            )
+        )
+
+        price_qs = (
+            CurrencyPrice.objects.filter(
+                currency_id=OuterRef("currency_id"), date__lte=datetime.today().date()
+            )
+            .order_by("-date")
+            .values("price")[:1]
+        )
+
+        accounts_usd = accounts_qs.annotate(
+            rate=Coalesce(Subquery(price_qs), F("currency__current_price")),
+            balance_usd=ExpressionWrapper(
+                F("local_balance") * F("rate"),
+                output_field=DecimalField(max_digits=20, decimal_places=2),
+            ),
+        ).aggregate(total_usd=Sum("balance_usd"))
+
+        total = accounts_usd.get("total_usd") or 0
+        return Response({"total_usd": float(total)})
