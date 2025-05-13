@@ -1,12 +1,27 @@
 from datetime import datetime, timedelta
 
-from django.db.models import Q, Sum
-from django.db.models.functions import TruncDay, TruncMonth, TruncWeek, TruncYear
+from django.db.models import (
+    DecimalField,
+    ExpressionWrapper,
+    F,
+    OuterRef,
+    Q,
+    Subquery,
+    Sum,
+)
+from django.db.models.functions import (
+    Coalesce,
+    TruncDay,
+    TruncMonth,
+    TruncWeek,
+    TruncYear,
+)
 from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from currencies.models import CurrencyPrice
 from transactions.models import Transaction
 
 
@@ -49,6 +64,21 @@ class TransactionStatsView(APIView):
         }
         TruncFunc = trunc_map.get(freq, TruncMonth)
 
+        price_qs = (
+            CurrencyPrice.objects.filter(
+                currency_id=OuterRef("account__currency_id"), date__lte=OuterRef("date")
+            )
+            .order_by("-date")
+            .values("price")[:1]
+        )
+
+        # Annotate each transaction with usd_amount = amount * price or current_price
+        usd_expr = ExpressionWrapper(
+            F("amount")
+            * Coalesce(Subquery(price_qs), F("account__currency__current_price")),
+            output_field=DecimalField(max_digits=20, decimal_places=2),
+        )
+
         qs = Transaction.objects.filter(user=user)
         if start_date:
             qs = qs.filter(date__gte=start)
@@ -59,10 +89,11 @@ class TransactionStatsView(APIView):
 
         qs = (
             qs.annotate(period=TruncFunc("date"))
+            .annotate(usd_amount=usd_expr)
             .values("period")
             .annotate(
-                income=Sum("amount", filter=Q(type="income")),
-                expense=Sum("amount", filter=Q(type="expense")),
+                income_usd=Sum("usd_amount", filter=Q(type="income")),
+                expense_usd=Sum("usd_amount", filter=Q(type="expense")),
             )
             .order_by("period")
         )
@@ -76,8 +107,8 @@ class TransactionStatsView(APIView):
         data = [
             {
                 "period": entry["period"].strftime(fmt),
-                "income": float(entry["income"] or 0),
-                "expense": float(entry["expense"] or 0),
+                "income": float(entry["income_usd"] or 0),
+                "expense": float(entry["expense_usd"] or 0),
             }
             for entry in qs
         ]
