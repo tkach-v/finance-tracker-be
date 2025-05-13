@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "categories",
     "accounts",
     "transactions",
+    "stats",
 ]
 
 MIDDLEWARE = [
